@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../../App';
 import { useHistory, useLocation } from 'react-router-dom';
-import { initializeLoginFramework, handleGoogleSignIn , handleSignOut, handleFbLogin, createUserWithEmailAndPassword, signInWithEmailAndPassword} from './loginManager';
+import { initializeLoginFramework, handleGoogleSignIn, handleSignOut, handleFbLogin, createUserWithEmailAndPassword, signInWithEmailAndPassword } from './loginManager';
 
 
 
@@ -20,45 +20,45 @@ function Login() {
 
   initializeLoginFramework();
 
-const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-const history = useHistory();
-const location = useLocation();
-let { from } = location.state || { from: { pathname: "/" } };
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const history = useHistory();
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
 
-const googleSignIn = () => {
-  handleGoogleSignIn()
-  .then(res => {
-    handleResponse(res, true);
+  const googleSignIn = () => {
+    handleGoogleSignIn()
+      .then(res => {
+        handleResponse(res, true);
 
-  })
-}
+      })
+  }
 
-const fbSignIn = () => {
-  handleFbLogin()
-  .then(res => {
-    handleResponse(res, true);
+  const fbSignIn = () => {
+    handleFbLogin()
+      .then(res => {
+        handleResponse(res, true);
 
-  })
-}
+      })
+  }
 
-const signOut = () => {
-  handleSignOut()
-  .then(res => {
-    handleResponse(res, false);
+  const signOut = () => {
+    handleSignOut()
+      .then(res => {
+        handleResponse(res, false);
 
-  })
+      })
 
-  
-  
-}
 
-const handleResponse = (res,redirect) => {
-  setUser(res);
+
+  }
+
+  const handleResponse = (res, redirect) => {
+    setUser(res);
     setLoggedInUser(res);
-    if(redirect){
-    history.replace(from);
+    if (redirect) {
+      history.replace(from);
     }
-}
+  }
 
   const handleBlur = (event) => {
     let isFieldValid = true;
@@ -84,33 +84,33 @@ const handleResponse = (res,redirect) => {
   const handleSubmit = (event) => {
     if (newUser && user.email && user.password) {
       createUserWithEmailAndPassword(user.name, user.email, user.password)
-      .then(res => {
-        handleResponse(res, true);
+        .then(res => {
+          handleResponse(res, true);
 
-      })
+        })
     }
 
     if (!newUser && user.email && user.password) {
       signInWithEmailAndPassword(user.email, user.password)
-      .then(res => {
-        handleResponse(res, true);
+        .then(res => {
+          handleResponse(res, true);
 
-      })
+        })
     }
     event.preventDefault();
   }
 
-  
+
 
   return (
-    <div style = {{textAlign: 'center'}}>
+    <div style={{ textAlign: 'center' }}>
       {
         user.isSignedIn ? <button onClick={signOut} >Sign Out</button> :
           <button onClick={googleSignIn} >Sign In</button>
 
       }
-      <br/>
-      <button onClick = {fbSignIn}>Sign in using Facebook</button>
+      <br />
+      <button onClick={fbSignIn}>Sign in using Facebook</button>
       {
         user.isSignedIn && <div>
           <p> Welcome, {user.name}</p>
@@ -136,7 +136,7 @@ const handleResponse = (res,redirect) => {
         <input type="password" name="password" onBlur={handleBlur} placeholder="Password" required />
 
         <br />
-        <input type="submit" value= {newUser ? 'Sign Up' : 'Sign In'} />
+        <input type="submit" value={newUser ? 'Sign Up' : 'Sign In'} />
       </form>
       <p style={{ color: 'red' }}>{user.error}</p>
       {user.success && <p style={{ color: 'green' }}>User {newUser ? 'Created' : 'Logged in'} Successfully</p>
