@@ -6,10 +6,12 @@ import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseMana
 import { Link } from 'react-router-dom';
 
 
+
 const Shop = () => {
     // const first10 = fakeData.slice(0, 10);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    document.title = "Shop More";
 
     useEffect(() => {
         fetch('https://arcane-crag-39571.herokuapp.com/products')
@@ -56,6 +58,9 @@ const Shop = () => {
     return (
         <div className="twin-container">
             <div className="product-container">
+                {
+                    products.length === 0 && <img src="https://miro.medium.com/max/882/1*9EBHIOzhE1XfMYoKz1JcsQ.gif" alt=""/>
+                }
 
                 {
                     products.map(pd => <Product
